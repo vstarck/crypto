@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>crypto :: Caesar Cypher</title>
+	<script type="text/javascript" src="crypto.caesar.js" ></script>
+</head>
+<body>
+<ul id="results">
+
+</ul>
+<script>
+	var cc3 = new crypto.CaesarCypher({ offset: 3 });
+	var cc5 = new crypto.CaesarCypher({ offset: 5 });
+	
+	function print(text, style) {
+		document.getElementById('results').innerHTML += '<li style="'+style+'">'+text+'</li>';
+	}
+	function printSuccess(text) {
+		print(text, 'color: green');
+	}
+	function printFail(text) {
+		print(text, 'color: red');
+	}
+	
+	function assert(exp, m) {	
+		m = m || '###';
+		
+		if(exp) {
+			printSuccess(m);
+		} else {
+			printFail(m);		
+		}
+	}
+
+	assert(cc3.encrypt('abc') != 'abc', 'cc3.encrypt("abc") != "abc"');
+	assert(cc3.decrypt(cc3.encrypt('abc')) == 'abc', 'cc3.decrypt(cc3.encrypt("abc")) == "abc"');
+	
+	assert(cc5.encrypt('abc') != 'abc', 'cc5.encrypt("abc") != "abc"');
+	assert(cc5.decrypt(cc5.encrypt('abc')) == 'abc', 'cc5.decrypt(cc5.encrypt("abc")) == "abc"');
+	
+	assert(cc3.encrypt('abc') != cc5.encrypt('abc'), 'cc3.encrypt("abc") != cc5.encrypt("abc")');
+	
+
+</script>
+</body>
+</html>
