@@ -11,6 +11,7 @@
 <script>
 	var cc3 = new crypto.CaesarCypher({ offset: 3 });
 	var cc5 = new crypto.CaesarCypher({ offset: 5 });
+	var cc5Negative = new crypto.CaesarCypher({ offset: -5 });
 	
 	function print(text, style) {
 		document.getElementById('results').innerHTML += '<li style="'+style+'">'+text+'</li>';
@@ -39,6 +40,9 @@
 	assert(cc5.decrypt(cc5.encrypt('abc')) == 'abc', 'cc5.decrypt(cc5.encrypt("abc")) == "abc"');
 	
 	assert(cc3.encrypt('abc') != cc5.encrypt('abc'), 'cc3.encrypt("abc") != cc5.encrypt("abc")');
+	
+	assert(cc5Negative.encrypt('abc') != 'abc', 'cc5Negative.encrypt("abc") != "abc"');
+	assert(cc5Negative.decrypt(cc5Negative.encrypt('abc')) == 'abc', 'cc5Negative.decrypt(cc5Negative.encrypt("abc")) == "abc"');
 	
 
 </script>

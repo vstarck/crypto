@@ -4,8 +4,12 @@ var crypto = {
 
 crypto.CaesarCypher = function(opts) {
 	opts = opts || {}; 
-	this.offset = opts.offset || 0;
+	this.offset = opts.offset || 0;	
 	this.alpha = opts.alpha || crypto.alpha;
+		
+	if(this.offset < 0) {
+		this.offset = (this.offset % this.alpha.length) + this.alpha.length;
+	}
 };
 
 crypto.CaesarCypher.prototype.translate = function(str, offset) {
@@ -21,8 +25,9 @@ crypto.CaesarCypher.prototype.translate = function(str, offset) {
 				
 		// si existe en el alfabeto
         if (index != -1) {
+			chr = alpha[(index + offset) % alphaSize ];				
+		
 			// lo traducimos
-            chr = alpha[(index + offset) % alphaSize ];
         }
 
         return memo + ( up ? chr.toUpperCase() : chr);
@@ -30,9 +35,9 @@ crypto.CaesarCypher.prototype.translate = function(str, offset) {
 };
 
 crypto.CaesarCypher.prototype.encrypt = function(str) {
-    return this.translate(str, this.offset, this.modifier, this.alpha, this.originalAlpha);
+    return this.translate(str, this.offset);
 };
 
 crypto.CaesarCypher.prototype.decrypt = function(str) {
-    return this.translate(str, -this.offset, 1/this.modifier, this.originalAlpha, this.alpha);
+    return this.translate(str, -this.offset);
 };
