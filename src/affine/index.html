@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>crypto :: Affine</title>
+	<script type="text/javascript" src="crypto.affine.js" ></script>
+</head>
+<body>
+<ul id="results"></ul>
+<script>
+	var affineOffset3 = new crypto.Affine({ offset: 3 });
+	var affineModifier3 = new crypto.Affine({ modifier: 3 });
+	var affineOffset3Modifier3 = new crypto.Affine({ offset: 3, modifier: 5 });
+	
+	function print(text, style) {
+		document.getElementById('results').innerHTML += '<li style="'+style+'">'+text+'</li>';
+	}
+	function printSuccess(text) {
+		print(text, 'color: green');
+	}
+	function printFail(text) {
+		print(text, 'color: red');
+	}
+	
+	function assert(exp, m) {	
+		m = m || '###';
+		
+		if(exp) {
+			printSuccess(m);
+		} else {
+			printFail(m);		
+		}
+	}
+
+	assert(affineOffset3.encrypt('abc') != 'abc', 'affineOffset3.encrypt("abc") != "abc"');
+	assert(affineOffset3.decrypt(affineOffset3.encrypt('abc')) == 'abc', 'affineOffset3.decrypt(affineOffset3.encrypt("abc")) == "abc"');
+	
+	assert(affineModifier3.encrypt('abc') != 'abc', 'affineModifier3.encrypt("abc") != "abc"');
+	assert(
+		affineModifier3.decrypt(affineModifier3.encrypt('abc')) == 'abc', 
+		'affineModifier3.decrypt(affineModifier3.encrypt("abc")) == "abc"'
+	);	
+	
+	assert(affineOffset3Modifier3.encrypt('abc') != 'abc', 'affineOffset3Modifier3.encrypt("abc") != "abc"');
+	assert(
+		affineOffset3Modifier3.decrypt(affineOffset3Modifier3.encrypt('abc')) == 'abc', 
+		'affineOffset3Modifier3.decrypt(affineOffset3Modifier3.encrypt("abc")) == "abc"'
+	);
+</script>
+</body>
+</html>
