@@ -24,10 +24,6 @@ crypto.Affine = function(opts) {
     }
 };
 
-crypto.Affine.prototype.translate = function(str, offset, modifier) {
-
-};
-
 crypto.Affine.prototype.encrypt = function(str) {
     var
         offset = this.offset,
