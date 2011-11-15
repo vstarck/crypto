@@ -14,7 +14,13 @@ crypto.Affine = function(opts) {
 };
 
 crypto.Affine.prototype.translate = function(str, offset, modifier) {
-    var 
+
+};
+
+crypto.Affine.prototype.encrypt = function(str) {
+	var 
+		offset = this.offset, 
+		modifier = this.modifier,
 		alpha = this.alpha,
 		alphaSize = alpha.length;
 
@@ -26,9 +32,10 @@ crypto.Affine.prototype.translate = function(str, offset, modifier) {
 				
 		// si existe en el alfabeto
         if (index != -1) {
-			var newIndex = (modifier * (index + offset)) % alphaSize;
+			//debugger;
+			var newIndex = (modifier * index + offset) % alphaSize;
 			// lo traducimos
-			console.log(chr, ' -> ', index, newIndex);
+			//console.log(chr, ' -> ', index, newIndex);
             chr = alpha[newIndex ];
         }
 
@@ -36,10 +43,34 @@ crypto.Affine.prototype.translate = function(str, offset, modifier) {
     }, '');
 };
 
-crypto.Affine.prototype.encrypt = function(str) {
-    return this.translate(str, this.offset, this.modifier);
-};
+crypto.Affine.prototype.decrypt = function(str) {	
+	var 
+		offset = -this.offset, 
+		modifier = 1/this.modifier,
+		alpha = this.alpha,
+		alphaSize = alpha.length;
 
-crypto.Affine.prototype.decrypt = function(str) {
-    return this.translate(str, -this.offset, 1/this.modifier);
+    return str.split('').reduce(function(memo, chr, i) {
+        var
+                index = alpha.indexOf(chr.toLowerCase()),
+				// es mayusculas?
+                up = /[A-Z]/.test(chr);
+				
+		// si existe en el alfabeto
+        if (index != -1) {
+			index =+ offset;
+		
+			while(modifier * index != Math.floor(modifier * index)) {
+				index += alphaSize;
+			}
+		
+			var newIndex = (modifier * index) % alphaSize;
+			
+			// lo traducimos
+			//console.log(chr, ' -> ', index, newIndex);
+            chr = alpha[newIndex];
+        }
+
+        return memo + ( up ? chr.toUpperCase() : chr);
+    }, '');
 };
