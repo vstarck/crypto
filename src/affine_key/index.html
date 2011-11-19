@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>crypto :: Affine</title>
-    <script type="text/javascript" src="crypto.affine.js"></script>
+    <title>crypto :: AffineKey</title>
+    <script type="text/javascript" src="crypto.affine_key.js"></script>
 </head>
 <body>
 <ul id="results"></ul>
 <script>
-    var affineOffset3 = new crypto.Affine({ offset: 3 });
-    var affineModifier3 = new crypto.Affine({ modifier: 3 });
-    var affineOffset3Modifier5 = new crypto.Affine({ offset: 3, modifier: 5 });
-    var affineOffset33Modifier51 = new crypto.Affine({ offset: 33, modifier: 51 });
+    var affineOffset3 = new crypto.AffineKey({ offset: 3 });
+    var affineModifier3 = new crypto.AffineKey({ modifier: 3 });
+    var affineOffset3Modifier5 = new crypto.AffineKey({ offset: 3, modifier: 5 });
+    var affineOffset33Modifier51 = new crypto.AffineKey({ offset: 33, modifier: 51 });
+    var affineKey1 = new crypto.AffineKey({ key: 'key' });
 
     function print(text, style) {
         document.getElementById('results').innerHTML += '<li style="' + style + '">' + text + '</li>';
@@ -55,9 +56,20 @@
             'affineOffset33Modifier51.decrypt( affineOffset33Modifier51.encrypt("abc") ) == "abc"'
     );
 
+    assert(affineKey1.encrypt('abc') != 'abc', 'affineKey1.encrypt("abc") != "abc"');
+
+    assert(
+            affineKey1.decrypt(affineKey1.encrypt('abc')) == 'abc',
+            'affineKey1.decrypt( affineKey1.encrypt("abc") ) == "abc"'
+    );
+    assert(
+            affineKey1.alpha != crypto.alpha,
+            'affineKey1.alpha != crypto.alpha'
+    );
+
     var ex = null;
     try {
-        new crypto.Affine({ offset: 3, modifier: 13 });
+        new crypto.AffineKey({ offset: 3, modifier: 13 });
     } catch(e) {
         ex = e;
     }
