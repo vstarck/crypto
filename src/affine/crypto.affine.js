@@ -1,5 +1,8 @@
 var crypto = {
-    alpha: 'abcdefghijklmnopqrstuvwxyz'
+    alpha: 'abcdefghijklmnopqrstuvwxyz',
+    gcd: function (a,b) {
+        return b ? crypto.gcd(b,a % b) : Math.abs(a);
+    }
 };
 
 crypto.Affine = function (opts) {
@@ -13,6 +16,10 @@ crypto.Affine = function (opts) {
     } else {
         this.offset = this.offset % this.alpha.length;
     }
+
+    if (crypto.gcd(this.alpha.length,this.modifier) != 1) {
+        throw 'Invalid arguments!';
+    }
 };
 
 crypto.Affine.prototype.encrypt = function (str) {
@@ -25,12 +32,16 @@ crypto.Affine.prototype.encrypt = function (str) {
     return str.split('').reduce(function (memo,chr,i) {
         var
                 index = alpha.indexOf(chr.toLowerCase()),
-                up = /[A-Z]/.test(chr),
-                newIndex;
+                up = /[A-Z]/.test(chr);
 
         if (index != -1) {
-            newIndex = (modifier * index + offset) % alphaSize;
-            chr = alpha[newIndex];
+            index = (modifier * index + offset) % alphaSize;
+
+            if (index < 0) {
+                index += alphaSize;
+            }
+
+            chr = alpha[index];
         }
 
         return memo + ( up ? chr.toUpperCase() : chr);
@@ -47,19 +58,20 @@ crypto.Affine.prototype.decrypt = function (str) {
     return str.split('').reduce(function (memo,chr,i) {
         var
                 index = alpha.indexOf(chr.toLowerCase()),
-                up = /[A-Z]/.test(chr),
-                newIndex;
+                up = /[A-Z]/.test(chr);
 
         if (index != -1) {
-            index = +offset;
+            index = index + offset;
 
-            while (modifier * index != Math.floor(modifier * index)) {
+            while (modifier * index != Math.floor(modifier * index))  {
                 index += alphaSize;
             }
 
-            newIndex = (modifier * index) % alphaSize;
+            if (index < 0) {
+                index += alphaSize;
+            }
 
-            chr = alpha[newIndex];
+            chr = alpha[modifier * index];
         }
 
         return memo + ( up ? chr.toUpperCase() : chr);

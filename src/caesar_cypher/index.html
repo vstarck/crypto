@@ -12,7 +12,8 @@
 	var cc3 = new crypto.CaesarCypher({ offset: 3 });
 	var cc5 = new crypto.CaesarCypher({ offset: 5 });
 	var cc5Negative = new crypto.CaesarCypher({ offset: -5 });
-	
+	var cc10 = new crypto.CaesarCypher({ offset: -5 });
+
 	function print(text, style) {
 		document.getElementById('results').innerHTML += '<li style="'+style+'">'+text+'</li>';
 	}
@@ -43,6 +44,9 @@
 	
 	assert(cc5Negative.encrypt('abc') != 'abc', 'cc5Negative.encrypt("abc") != "abc"');
 	assert(cc5Negative.decrypt(cc5Negative.encrypt('abc')) == 'abc', 'cc5Negative.decrypt(cc5Negative.encrypt("abc")) == "abc"');
+
+	assert(cc10.encrypt('Este es un ejemplo de texto!') != 'Este es un ejemplo de texto!', 'cc10.encrypt("Este es un ejemplo de texto!") != "Este es un ejemplo de texto!"');
+	assert(cc10.decrypt(cc10.encrypt('Este es un ejemplo de texto!')) == 'Este es un ejemplo de texto!', 'cc10.decrypt(cc10.encrypt("Este es un ejemplo de texto!")) == "Este es un ejemplo de texto!"');
 	
 
 </script>

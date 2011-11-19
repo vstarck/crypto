@@ -11,18 +11,19 @@
     var affineModifier3 = new crypto.Affine({ modifier: 3 });
     var affineOffset3Modifier5 = new crypto.Affine({ offset: 3, modifier: 5 });
     var affineOffset33Modifier51 = new crypto.Affine({ offset: 33, modifier: 51 });
+    var affineOffset103Modifier9 = new crypto.Affine({ offset: 10, modifier: 9 });
 
-    function print(text, style) {
+    function print(text,style) {
         document.getElementById('results').innerHTML += '<li style="' + style + '">' + text + '</li>';
     }
     function printSuccess(text) {
-        print(text, 'color: green');
+        print(text,'color: green');
     }
     function printFail(text) {
-        print(text, 'color: red');
+        print(text,'color: red');
     }
 
-    function assert(exp, m) {
+    function assert(exp,m) {
         m = m || '###';
 
         if (exp) {
@@ -32,23 +33,23 @@
         }
     }
 
-    assert(affineOffset3.encrypt('abc') != 'abc', 'affineOffset3.encrypt("abc") != "abc"');
-    assert(affineOffset3.decrypt(affineOffset3.encrypt('abc')) == 'abc', 'affineOffset3.decrypt( affineOffset3.encrypt("abc") ) == "abc"');
+    assert(affineOffset3.encrypt('abc') != 'abc','affineOffset3.encrypt("abc") != "abc"');
+    assert(affineOffset3.decrypt(affineOffset3.encrypt('abc')) == 'abc','affineOffset3.decrypt( affineOffset3.encrypt("abc") ) == "abc"');
 
-    assert(affineModifier3.encrypt('abc') != 'abc', 'affineModifier3.encrypt("abc") != "abc"');
+    assert(affineModifier3.encrypt('abc') != 'abc','affineModifier3.encrypt("abc") != "abc"');
     assert(
             affineModifier3.decrypt(affineModifier3.encrypt('abc')) == 'abc',
             'affineModifier3.decrypt( affineModifier3.encrypt("abc") ) == "abc"'
     );
 
-    assert(affineOffset3Modifier5.encrypt('abc') != 'abc', 'affineOffset3Modifier5.encrypt("abc") != "abc"');
+    assert(affineOffset3Modifier5.encrypt('abc') != 'abc','affineOffset3Modifier5.encrypt("abc") != "abc"');
 
     assert(
             affineOffset3Modifier5.decrypt(affineOffset3Modifier5.encrypt('abc')) == 'abc',
             'affineOffset3Modifier5.decrypt( affineOffset3Modifier5.encrypt("abc") ) == "abc"'
     );
 
-    assert(affineOffset33Modifier51.encrypt('abc') != 'abc', 'affineOffset33Modifier51.encrypt("abc") != "abc"');
+    assert(affineOffset33Modifier51.encrypt('abc') != 'abc','affineOffset33Modifier51.encrypt("abc") != "abc"');
 
     assert(
             affineOffset33Modifier51.decrypt(affineOffset33Modifier51.encrypt('abc')) == 'abc',
@@ -57,11 +58,20 @@
 
     var ex = null;
     try {
-        new crypto.Affine({ offset: 3, modifier: 13 });
-    } catch(e) {
+        new crypto.Affine({ offset: 3,modifier: 13 });
+    } catch (e) {
         ex = e;
     }
-    assert(ex == 'Invalid arguments!', 'Invalid arguments');
+    assert(ex == 'Invalid arguments!','Invalid arguments');
+
+    assert(
+            affineOffset103Modifier9.encrypt('Este es un ejemplo de texto!') != 'Este es un ejemplo de texto!',
+            'affineOffset103Modifier9.encrypt("Este es un ejemplo de texto!") != "Este es un ejemplo de texto!"'
+    );
+    assert(
+            affineOffset103Modifier9.decrypt(affineOffset103Modifier9.encrypt('Este es un ejemplo de texto!')) == 'Este es un ejemplo de texto!',
+            'affineOffset103Modifier9.decrypt(affineOffset103Modifier9.encrypt("Este es un ejemplo de texto!")) == "Este es un ejemplo de texto!"'
+    );
 
 </script>
 </body>
